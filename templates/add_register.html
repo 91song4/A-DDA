@@ -1,0 +1,22 @@
+
+{% extends 'base.html' %}
+{% block body %}
+<div>
+
+    <h3> {{legend}} </h3>
+    
+    <form method="POST" action="{{url_for('add_register') }}">
+        {{ form.csrf_token }}
+        {{ form.name.label }} {{form.name(size=20) }}
+        {{ form.id.label }} {{form.id(size=20) }}
+        {{ form.phonenum.label }} {{form.phonenum(size=20) }}
+        {{ form.password.label }} {{form.password(size=20) }}
+        {{ form.password_hint.label }} {{form.password_hint(size=20) }}
+        {{ form.email.label }} {{form.email(size=20) }}
+
+        <input type="submit" value="회원등록">
+
+    </form>
+</div>
+
+{% endblock %}
