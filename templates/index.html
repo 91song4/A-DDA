@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block body %}
+{% if registers %}
+<p><a href="{{ url_for('.add_register')}}"> 회원등록 </a></p>
+<table>
+    <thead>
+        <tr>
+            <td>번호</td>
+            <td style="padding-left: 6px;">이름</td>
+            <td>아이디</td>
+            <td>전화번호</td>
+            <td style="padding-left: 6px;">비밀번호</td>
+            <td>비밀번호 확인</td>
+            <td style="padding-left: 40px;">이메일</td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in registers %}
+        <tr>
+            <td>{{ row.registerld }}</td>
+            <td>{{ row.name }}</td>
+            <td>{{ row.id }}</td>
+            <td>{{ row.phonenum }}</td>
+            <td style="padding-left: 20px;">{{ row.password }}</td>
+            <td style="padding-left: 50px;">{{ row.password_hint }}</td>
+            <td>{{ row.email }}</td>
+            <td>
+                <form action="{{ url_for('get_register', member_id=row.registerld)}}" method="POST">
+                    <input type ="submit" value="수정하기" />
+                </form>
+                
+            </td>
+        
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+{% endblock%}
