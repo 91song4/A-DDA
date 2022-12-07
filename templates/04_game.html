@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>게임 & 오락</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@100&family=Noto+Serif+KR:wght@200&display=swap"
+          rel="stylesheet">
+
+    <style>
+        * {
+            font-family: 'Hahmlet', serif;
+            margin: 0px 0px 10px 0px;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: ghostwhite;
+        }
+
+        li {
+            list-style: none;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        #wrap {
+            margin-top: 60 p;
+        }
+
+        header {
+            background-color: black;
+            box-shadow: 0 2px 2px rgba(0, 0, 0, 0.05), 0 1px 0 rgba(0, 0, 0, 0.05);
+            top: 0;
+            width: 100%;
+            height: 60px;
+            z-index: 2000;
+        }
+
+        header {
+            top: 0;
+        }
+
+        nav {
+            float: right;
+        }
+
+        .nav_items > li {
+            display: inline-block;
+        }
+
+        .nav_items > li > a {
+            line-height: 60px;
+            padding: 0 30px;
+            color: rgba(0, 0, 0, 0.4);
+            color: ghostwhite;
+        }
+
+        .nav_items > li > a:hover {
+            color: rgba(0, 0, 0, 0.8);
+            color: turquoise;
+        }
+
+        .logo {
+            height: 60px;
+            margin: 12px 0 12px 25px;
+        }
+
+        .logo > img {
+            height: 60px;
+        }
+
+        .desc {
+            margin-top: 150px;
+            margin-left: 550px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="wrap">
+        <header>
+            <a class="logo" href="">
+                <img src="https://logos.textgiraffe.com/logos/logo-name/Adda-designstyle-boots-m.png" height="60px">
+            </a>
+            <nav>
+                <ul class="nav_items">
+                    <li><a onclick="location.href='logout'" , style="cursor: pointer;"/><strong>로그아웃</strong></a></li>
+                    <li><a onclick="location.href='mypage'" , style="cursor: pointer;"><strong>마이페이지</strong></a></li>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+    </div>
+    <div class="desc">
+        <p><h1>[게임 & 오락]</h1></p>
+        <p><h3>- 예시용 화면</h3></p>
+        <p><h3>- 내용은 생략하겠습니다.</h3></p>
+        <p><h3>- 이하 카테고리 동문.</h3></p>
+    </div>
+</body>
+</html>
