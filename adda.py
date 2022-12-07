@@ -14,13 +14,17 @@ class Adda:
         cursor = db.cursor(pymysql.cursors.DictCursor)
         cursor.execute('use adda;')    
 
-        cursor.execute(f"insert into log (user_id, api_uri, method) values('{user_id}','{api_uri}','{method}')")
+        cursor.execute('show tables;')
+        val = cursor.fetchall()
+        flag = 0
+        for i in val:
+            if i['Tables_in_adda'] == 'log':
+                flag = 1
 
-        # str = 'test'
-        # result = hashlib.sha256(str.encode())
-        # cursor.execute(f"insert into user(id, password,selfname,phone ) values('id_test3','{result.hexdigest()}','name_test3','phone_test3')")
-        # value = cursor.fetchall()
-        # print(value)
+        if flag == 0:
+            cursor.execute('create table log(id int(11) primary key auto_increment, created datetime default current_timestamp, user_id varchar(20), api_uri varchar(20) not null, method varchar(20) not null, foreign key (user_id) reference user(id) on update cascade);')
+
+        cursor.execute(f"insert into log (user_id, api_uri, method) values('{user_id}','{api_uri}','{method}')")
 
         db.commit()
         db.close()
