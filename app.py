@@ -1,5 +1,4 @@
-from flask import Flask 
-from flask import render_template, redirect, request, url_for, flash
+from flask import Flask, render_template, redirect, request, url_for, flash,session
 from flask_wtf import FlaskForm
 from wtforms import StringField, IntegerField
 from wtforms.validators import DataRequired 
@@ -7,6 +6,9 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import or_
 import pymysql
 
+from adda import Adda
+
+#app.secret_key = Adda().get_secret_key()
 
 app = Flask(__name__)
 app.config['SECRET_KEY']='SuperSecretKey'
@@ -39,6 +41,8 @@ class RegisterForm(FlaskForm):
     phonenum = StringField('Phonenum:', validators=[DataRequired()])
     email = StringField('Email:', validators=[DataRequired()])
 
+def log(user_id, api_uri, method):
+    Adda().log(user_id ,api_uri, method)
 
 # @app.route('/')
 # def index():
@@ -104,7 +108,6 @@ def update_register(member_id):
     return render_template('update_register.html', form=form, pageTitle='Update Friend', legend="Update A Friend")
 
 
-
-
+# 서버실행
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000)
