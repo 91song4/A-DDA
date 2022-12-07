@@ -2,3 +2,6 @@
 /__pycache__
 venv
 .idea
+DB_table.numbers
+test.py
+test.html
