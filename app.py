@@ -27,11 +27,15 @@ class colbert_registersapp(db.Model):
     
     def __repr__(self): 
         return "registerld: {0} | name: {1} | id: {2} | phonenum: {3} | password: {4} | password_hint: {5} | email: {6}".format(self.registerld, self.name, self.id, self.phonenum,
-                                                                                                                        self.password, self.password_hint, self.email )
+        self.password, self.password_hint, self.email )
 
 # 메인화면
 @app.route('/')
 def home():
+    print('home() access')
+    print(session)
+    if 'id' in session:
+        return  render_template('11_main_login.html')
     return render_template('01_main.html')
 
 class RegisterForm(FlaskForm):
@@ -48,7 +52,7 @@ def log(user_id, api_uri, method):
 
 # 로그인화면
 @app.route('/login', methods=['GET', 'POST'])
-def log_in():
+def login():
     return render_template('02_login.html')
 
 @app.route('/logout')
@@ -79,18 +83,6 @@ def mypage():
 @app.route('/writting')
 def writting():
     return render_template('13_writting.html')
-
-@app.route('/login', methods=['GET', 'POST'])
-def login_post():
-    id_receive = request.form['id_give']
-    pw_receive = request.form['pw_give']
-    return jsonify({'result': 'success', 'msg': '로그인 성공'})
-
-@app.route('/signup', methods=['GET', 'POST'])
-def singup_get():
-    id_receive = request.args.get('id_give')
-    pw_receive = request.args.get('pw_give')
-    return jsonify({'result': 'success', 'msg': '회원가입완료'})
    
 
 @app.route('/add_register', methods=['GET', 'POST'])
@@ -148,8 +140,11 @@ def update_register(member_id):
 
 
 # 로그인
-@app.route('/login', methods=['POST'])
-def login():
+@app.route('/api/login', methods=['POST'])
+def api_login():
+    Adda().log(session['id'], '/api/login', 'POST')
+    print('api_login() access')
+    
     id_receive = request.form['id_give']
     pass_receive = request.form['pass_give']
 
@@ -166,14 +161,14 @@ def login():
                          port=3306,
                          user='root',
                          password='123123',
-                         db='sparta_test',
+                         db='adda',
                          charset='utf8'
                          )
 
     cursor = db.cursor(pymysql.cursors.DictCursor)
-    cursor.execute('use sparta_test;')
+    cursor.execute('use adda;')
     cursor.execute(
-        f'select * from student where userid = "{id_receive}"')
+        f'select * from user where id = "{id_receive}"')
     user = cursor.fetchone()
 
     print(user)
@@ -194,10 +189,11 @@ def login():
     db.close()
 
 # 로그아웃
-@app.route('/logout')
-def logout():
-    session.pop('userid',None)
-    return render_template("index.html")
+@app.route('/api/logout')
+def api_logout():
+    Adda().log(session['id'], '/api/logout', 'GET')
+    session.clear()
+    return redirect(url_for("home"))
 
 # 서버실행
 if __name__ == '__main__':
