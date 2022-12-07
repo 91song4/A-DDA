@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <title><B반 4조: 화면구현></title>
+    <link href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@100&family=Noto+Serif+KR:wght@200&display=swap"
+          rel="stylesheet">
+
+    <style>
+        * {
+            font-family: 'Hahmlet', serif;
+            margin: 0px 0px 10px 0px;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: ghostwhite;
+        }
+
+        li {
+            list-style: none;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        #wrap {
+            margin-top: 60 p;
+        }
+
+        header {
+            background-color: black;
+            box-shadow: 0 2px 2px rgba(0, 0, 0, 0.05), 0 1px 0 rgba(0, 0, 0, 0.05);
+            top: 0;
+            width: 100%;
+            height: 60px;
+            z-index: 2000;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+        }
+
+        nav {
+            float: right;
+        }
+
+        .nav_items > li {
+            display: inline-block;
+        }
+
+        .nav_items > li > a {
+            line-height: 60px;
+            padding: 0 30px;
+            color: rgba(0, 0, 0, 0.4);
+            color: ghostwhite;
+        }
+
+        .nav_items > li > a:hover {
+            color: rgba(0, 0, 0, 0.8);
+            color: turquoise;
+        }
+
+        .logo {
+            height: 60px;
+            margin: 12px 0 12px 25px;
+        }
+
+        .logo > img {
+            height: 60px;
+        }
+
+        #content_wrap:after {
+            content: "";
+            display: block;
+            clear: both;
+        }
+
+        aside {
+            background-color: black;
+            position: fixed;
+            top: 60px;
+            bottom: 0;
+
+            width: 190px;
+            padding-top: 25px;
+
+            margin-top: 10px;
+            margin-left: 10px;
+            border-radius: 15px;
+        }
+
+        aside > ul {
+            width: 200px;
+        }
+
+        aside > ul > li > a {
+            color: white;
+            display: block;
+            padding: 10px 0 10px 20px;
+        }
+
+        aside > ul > li > a.active {
+            background-color: #333;
+            width: 150px;
+        }
+
+        aside > ul > li > a:hover:not(.active) {
+            background-color: darkslategray;
+            color: mediumspringgreen;
+            width: 190px;
+        }
+
+        aside > h1 {
+            color: #fff;
+            padding: 20px 0 20px 20px;
+        }
+
+        #cat {
+            margin-left: 3px;
+            margin-top: -10px;
+        }
+
+        section {
+            float: left;
+            margin-left: 200px;
+            width: 800px;
+        }
+
+        .container {
+            column-count: 1;
+            margin-top: 52px;
+        }
+
+        .bNORRx {
+            margin-top: 20px;
+        }
+
+        .bcBPBP {
+            display: flex;
+            -webkit-box-align: center;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: -40px;
+            margin-left: 720px;
+        }
+
+        .kawync {
+            display: flex;
+            -webkit-box-align: center;
+            align-items: center;
+        }
+
+        .UIeqP {
+            background-color: black;
+            color: goldenrod;
+            border: none;
+            border-radius: 8px;
+            padding: 4px 6px;
+            font-size: 1rem;
+            line-height: 1em;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out 0s;
+        }
+
+        .UIeqP:hover {
+            background-color: goldenrod;
+            color: black;
+        }
+
+        .gWvDoY {
+            background-color: black;
+            color: goldenrod;
+            border: none;
+            border-radius: 8px;
+            padding: 4px 6px;
+            font-size: 1rem;
+            line-height: 1em;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out 0s;
+        }
+
+        .gWvDoY:hover {
+            background-color: goldenrod;
+            color: black;
+        }
+
+        .card {
+            float: left;
+            width: 500px;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .card-img-top {
+            height: 7rem;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        #sbtn {
+            background-color: ghostwhite;
+        }
+
+        article {
+            background-color: white;
+            margin: 10px;
+            padding: 25px;
+            width: 840px;
+            border-radius: 10px;
+        }
+
+        article > hr {
+            background-color: black;
+            width: 790px;
+            margin-left: 0px;
+        }
+
+        #writting {
+            background-color: transparent;
+        }
+
+        aside_right {
+            background-color: black;
+            color: ghostwhite;
+            float: right;
+            width: 190px;
+            line-height: 100px;
+            text-align: center;
+            height: 1300px;
+            margin-right: 0px;
+            margin-top: 60px;
+            margin-right: 13px;
+            border-radius: 15px;
+        }
+
+        footer {
+            background-color: #f2f2f2;
+            color: black;
+            position: absolute;
+            height: 60px;
+            width: 100%;
+            padding: 0 25px;
+            line-height: 60px;
+            border-top: 1px solid #dee5e7;
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+    <script>
+        function login(url, title, w, h) {
+            var screenLeft = window.screenLeft != undefined ? window.screenLeft : screen.left;
+            var screenTop = window.screenTop != undefined ? window.screenTop : screen.top;
+
+            width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
+            height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
+
+            var left = ((width / 2) - (w / 2)) + screenLeft;
+            var top = ((height / 2) - (h / 2)) + screenTop;
+
+            window.open(url, title, 'scrollbars=yes, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
+        }
+    </script>
+    <script>
+        function about(url, title, w, h) {
+            var screenLeft = window.screenLeft != undefined ? window.screenLeft : screen.left;
+            var screenTop = window.screenTop != undefined ? window.screenTop : screen.top;
+
+            width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
+            height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
+
+            var left = ((width / 2) - (w / 2)) + screenLeft;
+            var top = ((height / 2) - (h / 2)) + screenTop;
+
+            window.open(url, title, 'scrollbars=yes, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
+        }
+    </script>
+    <script>
+        function writting(url, title, w, h) {
+            var screenLeft = window.screenLeft != undefined ? window.screenLeft : screen.left;
+            var screenTop = window.screenTop != undefined ? window.screenTop : screen.top;
+
+            width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
+            height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
+
+            var left = ((width / 2) - (w / 2)) + screenLeft;
+            var top = ((height / 2) - (h / 2)) + screenTop;
+
+            window.open(url, title, 'scrollbars=yes, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
+        }
+    </script>
+</head>
+
+<body>
+    <div id="wrap">
+        <header>
+            <a class="logo" href="">
+                <img src="https://logos.textgiraffe.com/logos/logo-name/Adda-designstyle-boots-m.png" height="60px">
+            </a>
+            <nav>
+                <ul class="nav_items">
+                    <li><a onclick="location.href='logout'", style="cursor: pointer;"/><strong>로그아웃</strong></a></li>
+                    <li><a onclick="location.href='mypage'", style="cursor: pointer;"><strong>마이페이지</strong></a></li>
+                    <li><a onclick="about('about','','500','300');", style="cursor: pointer;"/><strong>About</strong></a></li>
+                </ul>
+            </nav>
+        </header>
+    </div>
+    <div id="content_wrap">
+        <aside>
+            <h1 id="cat"><span style="color: ghostwhite">CATEGORY</h1>
+            <hr>
+            <ul>
+                <li><a onclick="location.href='game'", style="cursor: pointer;">🎮 게임 & 오락</a></li>
+                <li><a onclick="location.href='economic'", style="cursor: pointer;">💲 경제 & 금융</a></li>
+                <li><a onclick="location.href='voyage'", style="cursor: pointer;">⛺ 여행 & 맛집</a></li>
+                <li><a onclick="location.href='it'", style="cursor: pointer;">💻 IT & 미디어</a></li>
+                <li><a onclick="location.href='sports'", style="cursor: pointer;">⚽ 스포츠</a></li>
+                <li><a onclick="location.href='fashion'", style="cursor: pointer;">💋 패션 & 뷰티</a></li>
+                <li><a onclick="location.href='car'", style="cursor: pointer;">🚗 차량 & 세차</a></li>
+            </ul>
+        </aside>
+        <section class="container">
+            <article id="writting">
+                <div><strong><h3>👍추천사이트!</h3></strong></div>
+                <div>
+                    <div class="card" style="width: 8rem;">
+                        <a href="https://www.nexon.com/Home/Game" target="_blank" rel="noopener noreferrer"><img
+                                src="https://yt3.ggpht.com/ytc/AMLnZu8WEE5_HBDleyIgd0XTEMVe7ZMJwT4g2w978-hJrQ=s900-c-k-c0x00ffffff-no-rj" class="card-img-top"
+                                alt="..."></a>
+                    </div>
+                    <div class="card" style="width: 8rem;">
+                        <a href="https://www.netmarble.net/" target="_blank" rel="noopener noreferrer"><img
+                                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1GPTAtHbDp-RW2swTTVHAbNaOPLHwPkc68JTQwJ3aDEFk_6oEsrm1iODf8dc2xBNNUbo&usqp=CAU" class="card-img-top"
+                                alt="..."></a>
+                    </div>
+                    <div class="card" style="width: 8rem;">
+                        <a href="https://ceo.baemin.com/relaychannel" target="_blank" rel="noopener noreferrer"><img
+                                src="https://www.epnnews.com/news/photo/202008/5125_6194_2959.jpg" class="card-img-top"
+                                alt="..."></a>
+                    </div>
+                    <div class="card" style="width: 8rem;">
+                        <a href="https://www.goodchoice.kr/" target="_blank" rel="noopener noreferrer"><img
+                                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIdBz4fMH1pfiQK-DuP5H4-q_O3G5bwT3t_HilBAENRwchnmMRhCm5aJsrXWIgn4SqKpQ&usqp=CAU" class="card-img-top"
+                                alt="..."></a>
+                    </div>
+                    <div class="card" style="width: 8rem;">
+                        <a href="https://www.fmkorea.com/" target="_blank" rel="noopener noreferrer"><img
+                                src="https://play-lh.googleusercontent.com/agZGGDcxU6h6lGOapuqxCpwYdsuXEs4UTx1anpm0eGXB5ZHHUu71sxWWzjNiWFDS8A=w480-h960-rw" class="card-img-top"
+                                alt="..."></a>
+                    </div>
+                    <div class="card" style="width: 8rem;">
+                        <a href="https://www.musinsa.com/app/" target="_blank" rel="noopener noreferrer"><img
+                                src="https://image.msscdn.net/mfile_s01/fb/share_musinsa.png" class="card-img-top"
+                                alt="..."></a>
+                        <div class="card-body"></div>
+                    </div>
+                </div>
+                <div>
+                    <p><h3><strong>✍ 적어보기</strong></h3></p>
+                    <p class="bNORRx"><li><a onclick="writting('writting','','500','300');", style="cursor: pointer;"/><textarea name="message" rows="2" cols="100">Writting here.</textarea></a></li></p>
+                    <hr>
+                </div>
+            </article>
+            <article id="sbtn">
+                <div class="sc-inHwnm bcBPBP">
+                    <div class="sc-wQkWr kawync">
+                        <button class="sc-bQMjyU UIeqP">인기</button>
+                        <button class="sc-bQMjyU gWvDoY">최신</button>
+                    </div>
+                </div>
+            </article>
+            <article id="posting">
+                <h1>회원이 되신 것을 환영합니다!</h1>
+                <p>#1 글을 작성하고 회원님들과 취미생활을 공유해보세요!</p>
+                <p>#2 어려운 점이 있거나 애로사항이 있을 경우 회원님들께 물어보세요!</p>
+            </article>
+        </section>
+        <aside_right>
+            <p><a onclick="", style="cursor: pointer;"><strong>기능구현 생략</strong></a></p><hr>
+            <p><a onclick="", style="cursor: pointer;"><strong>채팅</strong></a></p><hr>
+            <p><a onclick="", style="cursor: pointer;"><strong>댓글</strong></a></p><hr>
+            <p><a onclick="", style="cursor: pointer;"><strong>환율</strong></a></p><hr>
+            <p><a onclick="", style="cursor: pointer;"><strong>날씨</strong></a></p><hr>
+            <p><a onclick="", style="cursor: pointer;"><strong>즐겨찾기</strong></a></p><hr>
+            <p><a onclick="", style="cursor: pointer;"><strong>팔로우</strong></a></p><hr>
+            <p><a onclick="", style="cursor: pointer;"><strong>멘션</strong></a></p><hr>
+        </aside_right>
+    </div>
+    <div>
+        <footer>
+            © Copyright 2022 스파르타코딩클럽 Node.js 4기 B반 4조
+        </footer>
+    </div>
+</body>
+</html>

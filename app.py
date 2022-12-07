@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request, url_for, flash,session
+from flask import Flask, render_template, redirect, request, url_for, flash,session, jsonify
 from flask_wtf import FlaskForm
 from wtforms import StringField, IntegerField
 from wtforms.validators import DataRequired 
@@ -29,8 +29,10 @@ class colbert_registersapp(db.Model):
         return "registerld: {0} | name: {1} | id: {2} | phonenum: {3} | password: {4} | password_hint: {5} | email: {6}".format(self.registerld, self.name, self.id, self.phonenum,
                                                                                                                         self.password, self.password_hint, self.email )
 
-
-
+# 메인화면
+@app.route('/')
+def home():
+    return render_template('01_main.html')
 
 class RegisterForm(FlaskForm):
     registerld = IntegerField('Regiseterld ID:')
@@ -42,16 +44,53 @@ class RegisterForm(FlaskForm):
     email = StringField('Email:', validators=[DataRequired()])
 
 def log(user_id, api_uri, method):
-    Adda().log(user_id ,api_uri, method)
+    Adda().log(user_id, api_uri, method)
 
-# @app.route('/')
-# def index():
-#     return render_template('index.html', pageTitle='MyPage')
+# 로그인화면
+@app.route('/login', methods=['GET', 'POST'])
+def log_in():
+    return render_template('02_login.html')
 
-@app.route('/')
-def index():
-    all_regiseters = colbert_registersapp.query.all()
-    return render_template('index.html', registers=all_regiseters, pageTitle='모든 회원 데이터베이스', )
+@app.route('/logout')
+def logout():
+    return redirect(url_for(''))
+
+# 회원가입화면
+@app.route('/signup')
+def signup():
+    return render_template('03_signup.html')
+
+# 추가화면
+@app.route('/about')
+def about():
+    return '김범석, 송지훈, 이호승, 전진영, 선승우'
+
+# Aside
+@app.route('/game')
+def game():
+    return render_template('04_game.html')
+
+# mypage
+@app.route('/mypage')
+def mypage():
+    return render_template('12_mypage.html')
+
+# mypage
+@app.route('/writting')
+def writting():
+    return render_template('13_writting.html')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login_post():
+    id_receive = request.form['id_give']
+    pw_receive = request.form['pw_give']
+    return jsonify({'result': 'success', 'msg': '로그인 성공'})
+
+@app.route('/signup', methods=['GET', 'POST'])
+def singup_get():
+    id_receive = request.args.get('id_give')
+    pw_receive = request.args.get('pw_give')
+    return jsonify({'result': 'success', 'msg': '회원가입완료'})
    
 
 @app.route('/add_register', methods=['GET', 'POST'])
@@ -110,4 +149,4 @@ def update_register(member_id):
 
 # 서버실행
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run('0.0.0.0', port=5000, debug=True)
