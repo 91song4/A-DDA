@@ -5,36 +5,186 @@
 <p><a href="{{ url_for('.add_register')}}"> 회원등록 </a></p>
 <table>
     <thead>
-        <tr>
-            <td>번호</td>
-            <td style="padding-left: 6px;">이름</td>
-            <td>아이디</td>
-            <td>전화번호</td>
-            <td style="padding-left: 6px;">비밀번호</td>
-            <td>비밀번호 확인</td>
-            <td style="padding-left: 40px;">이메일</td>
-        </tr>
-    </thead>
-    <tbody>
+        <head>
+            <meta charset="UTF-8">
+            <title>Mypage</title>
+            <link href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@100&family=Noto+Serif+KR:wght@200&display=swap"
+                rel="stylesheet">
+            <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    // 마이페이지 프로필 사진 불러오기.
+                    axios.get('/api/user_img_load').then((response) => {
+                        const profile_img = document.querySelector('#profile-img');
+                        file_name = response.data;
+                        profile_img.src = `../static/profile_image/${file_name}`;
+                    })
+        
+        
+                    const upload_btn = document.querySelector('#upload-btn');
+                    const image_btn = document.querySelector('#profile-img');
+                    const submit_btn = document.querySelector('#submit-btn');
+                    image_btn.addEventListener('click', () => { upload_btn.click() });
+                    upload_btn.addEventListener('change', () => { submit_btn.click(); });
+                })
+            </script>
+            <style>
+                * {
+                    font-family: 'Hahmlet', serif;
+                    margin: 0px 0px 10px 0px;
+                    padding: 0;
+                    box-sizing: border-box;
+                }
+        
+                body {
+                    background-color: ghostwhite;
+                }
+        
+                li {
+                    list-style: none;
+                }
+        
+                a {
+                    text-decoration: none;
+                }
+        
+                #wrap {
+                    margin-top: 60 p;
+                }
+        
+                header {
+                    background-color: black;
+                    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.05), 0 1px 0 rgba(0, 0, 0, 0.05);
+                    top: 0;
+                    width: 100%;
+                    height: 60px;
+                    z-index: 2000;
+                }
+        
+                header {
+                    top: 0;
+                }
+        
+                nav {
+                    float: right;
+                }
+        
+                .nav_items>li {
+                    display: inline-block;
+                }
+        
+                .nav_items>li>a {
+                    line-height: 60px;
+                    padding: 0 30px;
+                    color: rgba(0, 0, 0, 0.4);
+                    color: ghostwhite;
+                }
+        
+                .nav_items>li>a:hover {
+                    color: rgba(0, 0, 0, 0.8);
+                    color: turquoise;
+                }
+        
+                .logo {
+                    height: 60px;
+                    margin: 12px 0 12px 25px;
+                }
+        
+                .logo>img {
+                    height: 60px;
+                }
+        
+                #content_wrap:after {
+                    content: "";
+                    display: block;
+                    clear: both;
+                }
+        
+                aside {
+                    background-color: black;
+                    color: ghostwhite;
+                    position: left;
+                    top: 100px;
+                    bottom: 0;
+        
+                    width: 250px;
+                    height: 250px;
+                    padding-top: 25px;
+                    text-align: center;
+        
+                    margin-top: 70px;
+                    margin-left: 90px;
+                    border-radius: 50px;
+                }
+        
+                .container {
+                    column-count: 1;
+                    margin-top: 22px;
+                }
+        
+                section {
+                    float: left;
+                    margin-top: -220px;
+                    margin-left: 400px;
+                    width: 800px;
+                    height: 100px;
+                }
+            </style>
+            <script>
+                function change_image(url, title, w, h) {
+                    var screenLeft = window.screenLeft != undefined ? window.screenLeft : screen.left;
+                    var screenTop = window.screenTop != undefined ? window.screenTop : screen.top;
+        
+                    width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
+                    height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
+        
+                    var left = ((width / 2) - (w / 2)) + screenLeft;
+                    var top = ((height / 2) - (h / 2)) + screenTop;
+        
+                    window.open(url, title, 'scrollbars=yes, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
+                }
+            </script>
         {% for row in registers %}
         <tr>
-            <td>{{ row.registerld }}</td>
-            <td>{{ row.name }}</td>
-            <td>{{ row.id }}</td>
-            <td>{{ row.phonenum }}</td>
-            <td style="padding-left: 20px;">{{ row.password }}</td>
-            <td style="padding-left: 50px;">{{ row.password_hint }}</td>
-            <td>{{ row.email }}</td>
-            <td>
-                <form action="{{ url_for('get_register', member_id=row.registerld)}}" method="POST">
-                    <input type ="submit" value="수정하기" />
-                </form>
-                
-            </td>
-        
+            <div id="content_wrap">
+                <aside style="padding-left: 61px;">
+                    <p><strong style="padding-right: 60px;">PROFILE</strong></p>
+                    <img id="profile-img" width="125;"
+                         src="https://raw.githubusercontent.com/91song4/A-DDA/main/static/profile_image/default.png?v1"
+                         class="rounded float-start" alt="...">
+                    <form method="POST" action="/api/user_img_upload" enctype="multipart/form-data">
+                        <div><input style="display:none" id="upload-btn" type="file" name="file" accept="image/*"/></div>
+                        <input style="display:none" type="submit" id="submit-btn"/>
+                    </form>
+                </aside>
+                <section>
+                    <div>
+                        <li>번호: {{ row.memberid }}</li>
+                        <li>ID: {{ row.ID }}</li>
+                        <li>비밀번호: {{ row.password }}</li>
+                        <li>이름: {{ row.selfname }}</li>
+                        <li>전화번호: {{ row.phone }}</li>
+                         <form action="{{ url_for('update_register', member_id=row.memberid)}}" method="POST">
+                                <input type ="submit" value="수정하기" />
+                       
+                        </form>
+                        <form action="{{ url_for('delete_register', member_id=row.memberid)}}" method="POST">
+                            <input type ="submit" value="회원탈퇴" />
+                        </form>
+                        
+
+                       
+
+                    </div>
+                </section>        
+
+            </div>
+             
         </tr>
         {% endfor %}
-    </tbody>
+    </thead>
+
+       
 </table>
 {% endif %}
 {% endblock%}
