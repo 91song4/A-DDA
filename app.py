@@ -138,13 +138,50 @@ def update_register(member_id):
     form.email.data = register.email
     return render_template('update_register.html', form=form, pageTitle='Update Friend', legend="Update A Friend")
 
+@app.route('/api/user_img_upload', methods=['POST'])
+def api_usr_img_upload():
+    print(request.method)
+    # if request.method == 'POST':
+    f = request.files['file']
+    extension = f.filename.split('.')[-1]
+    print(f.filename.split('.'))
+    filename = f'{session["id"]}.{extension}'
+    print(filename)
+    f.save(f'static/profile_image/{filename}')
+
+    db = pymysql.connect(host='localhost',port=3306,user='root',password='123123',db='adda',charset='utf8')
+
+    cursor = db.cursor(pymysql.cursors.DictCursor)
+    cursor.execute('use adda;')
+    cursor.execute(f'update user set profile = "{filename}" where id = "{session["id"]}";')
+
+    db.commit()
+    db.close()
+    
+    return redirect(url_for('mypage'))
+
+
+@app.route('/api/user_img_load', methods=['GET'])
+def api_user_img_load():
+    print('api user img load() access')
+    db = pymysql.connect(host='localhost',port=3306,user='root',password='123123',db='adda',charset='utf8')
+
+    cursor = db.cursor(pymysql.cursors.DictCursor)
+    cursor.execute('use adda;')
+    cursor.execute(f'select profile from user where id = "{session["id"]}";')
+    user_img = cursor.fetchone()
+
+    db.commit()
+    db.close()
+    return user_img['profile']
 
 # 로그인
 @app.route('/api/login', methods=['POST'])
 def api_login():
-    Adda().log(session['id'], '/api/login', 'POST')
+    if 'id' in session:
+        Adda().log(session['id'], '/api/login', 'POST')
     print('api_login() access')
-    
+
     id_receive = request.form['id_give']
     pass_receive = request.form['pass_give']
 
