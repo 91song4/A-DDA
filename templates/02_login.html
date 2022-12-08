@@ -1,99 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>로그인</title>
-    <link href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@100&family=Noto+Serif+KR:wght@200&display=swap"
-        rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@100&family=Noto+Serif+KR:wght@200&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
+      crossorigin="anonymous"
+    />
 
     <style>
-        * {
-            font-family: 'Hahmlet', serif;
-            margin: 0px 0px 10px 0px;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      * {
+        font-family: "Hahmlet", serif;
+        margin: 0px 0px 10px 0px;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-        body {
-            background-color: ghostwhite;
-        }
+      body {
+        background-color: ghostwhite;
+      }
 
-        li {
-            list-style: none;
-        }
+      li {
+        list-style: none;
+      }
 
-        a {
-            text-decoration: none;
-        }
+      a {
+        text-decoration: none;
+      }
 
-        #wrap {
-            margin-top: 60 p;
-        }
+      #wrap {
+        margin-top: 60 p;
+      }
 
-        header {
-            background-color: black;
-            box-shadow: 0 2px 2px rgba(0, 0, 0, 0.05), 0 1px 0 rgba(0, 0, 0, 0.05);
-            top: 0;
-            width: 100%;
-            height: 60px;
-            z-index: 2000;
-        }
+      header {
+        background-color: black;
+        box-shadow: 0 2px 2px rgba(0, 0, 0, 0.05), 0 1px 0 rgba(0, 0, 0, 0.05);
+        top: 0;
+        width: 100%;
+        height: 60px;
+        z-index: 2000;
+      }
 
-        header {
-            top: 0;
-        }
+      header {
+        top: 0;
+      }
 
-        .logo {
-            height: 60px;
-            margin: 12px 0 12px 25px;
-        }
+      .logo {
+        height: 60px;
+        margin: 12px 0 12px 25px;
+      }
 
-        .logo>img {
-            height: 60px;
-        }
+      .logo > img {
+        height: 60px;
+      }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
-        crossorigin="anonymous"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+      crossorigin="anonymous"
+    ></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
-        function hey() {
-            console.log('hey()');
-            const id = document.querySelector('#get_id').value;
-            const pw = document.querySelector('#get_pw').value;
-            console.log(id, pw)
-            $.ajax({
-                type: "POST",
-                url: "/api/login",
-                data: { id_give: id, pass_give: pw },
-                success: function (response) {
-                    console.log('api/login access');
-                    opener.parent.location.reload();
-                    window.close();
-                }
-            })
-        }
+      function hey() {
+        console.log("hey()");
+        const id = document.querySelector("#get_id").value;
+        const pw = document.querySelector("#get_pw").value;
+        console.log(id, pw);
+        $.ajax({
+          type: "POST",
+          url: "/api/login",
+          data: { id_give: id, pass_give: pw },
+          success: function (response) {
+            console.log("api/login access");
+            opener.parent.location.reload();
+            window.close();
+          },
+        });
+      }
     </script>
-</head>
+  </head>
 
-<body>
+  <body>
     <div id="wrap">
-        <header>
-            <a class="logo" href="">
-                <img src="https://logos.textgiraffe.com/logos/logo-name/Adda-designstyle-boots-m.png" height="60px">
-            </a>
-        </header>
+      <header>
+        <a class="logo" href="">
+          <img
+            src="https://logos.textgiraffe.com/logos/logo-name/Adda-designstyle-boots-m.png"
+            height="60px"
+          />
+        </a>
+      </header>
     </div>
     <div>
-        <input id="get_id" type="userid" name="id_give" placeholder="Userid">
-        <input id="get_pw" type="password" name="pass_give" placeholder="Password">
-        <br><br>
-        <!-- <input type="submit" value="로그인"> -->
-        <button onclick="hey()">로그인</button>
+      <input id="get_id" type="userid" name="id_give" placeholder="Userid" />
+      <input
+        id="get_pw"
+        type="password"
+        name="pass_give"
+        placeholder="Password"
+      />
+      <br /><br />
+      <!-- <input type="submit" value="로그인"> -->
+      <button onclick="hey()">로그인</button>
     </div>
-</body>
-
+  </body>
 </html>
