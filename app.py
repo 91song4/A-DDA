@@ -25,7 +25,7 @@ class user(db.Model):
     selfname = db.Column(db.String(255))
     phone = db.Column(db.String(255))
 
-   
+
 # 메인화면
 @app.route('/')
 def home():
@@ -128,7 +128,7 @@ def get_register(member_id):
 def update_register(member_id):
     register = user.query.get_or_404(member_id)
     form = RegisterForm()
-    
+
     if form.validate_on_submit():
         register.ID = form.ID.data
         register.password = form.password.data
