@@ -5,9 +5,10 @@
     <h3> {{legend}} </h3>
     
     <form method="POST" action="">
-        {{ form.csrf_token }}
-        {{ form.memberid.label }} {{form.memberid }}
         {{ form.ID.label }} {{form.ID }}
+        {{ form.password.label }} {{form.password }}
+        {{ form.selfname.label }} {{form.selfname }}
+        {{ form.phone.label }} {{form.phone }}
         <input type="submit" value="Save">
     </form>
 </div>

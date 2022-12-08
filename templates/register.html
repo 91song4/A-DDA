@@ -6,8 +6,6 @@
     
     {% if form %}
     <form method="POST" action="">
-
-        {{ form.csrf_token }}
         {{ form.memberid.label }} {{form.memberid }}
         {{ form.ID.label }} {{form.ID }}
         {{ form.password.label }} {{form.password }}
