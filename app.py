@@ -75,9 +75,9 @@ def game():
 
 
 # mypage
-@app.route('/mypage')
-def mypage():
-    return render_template('12_mypage.html')
+# @app.route('/mypage')
+# def mypage():
+#     return render_template('12_mypage.html')
 
 
 # mypage
@@ -88,7 +88,7 @@ def writting():
 
 # 회원가입 구현 
 
-@app.route('/index')
+@app.route('/mypage')
 def index():
     all_regiseters = user.query.all()
     return render_template('index.html', registers=all_regiseters, pageTitle='모든 회원 데이터베이스', )
@@ -126,13 +126,14 @@ def get_register(member_id):
 def update_register(member_id):
     register = user.query.get_or_404(member_id)
     form = RegisterForm()
+    
     if form.validate_on_submit():
         register.ID = form.ID.data
         register.password = form.password.data
         register.selfname = form.selfname.data
         register.phone = form.phone.data
         db.session.commit()
-        return redirect(url_for('get_register', member_id=register.registerld))
+        return redirect(url_for('get_register', member_id=register.memberid))
     form.memberid.data = register.memberid
     form.ID.data = register.ID
     form.password.data = register.password
