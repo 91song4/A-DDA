@@ -89,7 +89,57 @@
         .logo>img {
             height: 60px;
         }
+
+        #content_wrap:after {
+            content: "";
+            display: block;
+            clear: both;
+        }
+
+        aside {
+            background-color: black;
+            color: ghostwhite;
+            position: left;
+            top: 100px;
+            bottom: 0;
+
+            width: 250px;
+            height: 250px;
+            padding-top: 25px;
+            text-align: center;
+
+            margin-top: 70px;
+            margin-left: 90px;
+            border-radius: 50px;
+        }
+
+        .container {
+            column-count: 1;
+            margin-top: 22px;
+        }
+
+        section {
+            float: left;
+            margin-top: -220px;
+            margin-left: 400px;
+            width: 800px;
+            height: 100px;
+        }
     </style>
+    <script>
+        function change_image(url, title, w, h) {
+            var screenLeft = window.screenLeft != undefined ? window.screenLeft : screen.left;
+            var screenTop = window.screenTop != undefined ? window.screenTop : screen.top;
+
+            width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
+            height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
+
+            var left = ((width / 2) - (w / 2)) + screenLeft;
+            var top = ((height / 2) - (h / 2)) + screenTop;
+
+            window.open(url, title, 'scrollbars=yes, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
+        }
+    </script>
 </head>
 
 <body>
@@ -106,29 +156,31 @@
             </nav>
         </header>
     </div>
-    <div>
-        <p>
-            <마이페이지>
-        </p>
-    </div>
-    <div>
-        <img id="profile-img" style="width: 300px; height : 300px;">
-        <form method="POST" action="/api/user_img_upload" enctype="multipart/form-data">
-            <div><input style="display:none" id="upload-btn" type="file" name="file" accept="image/*" /></div>
-            <input style="display:none" type="submit" id="submit-btn" />
-        </form>
-        <ul>
-            <li>
-                <p>이름: <input type="text"></p>
-            </li>
-            <li>
-                <p>패스워드 변경: <input type="text"></p>
-            </li>
-        </ul>
-    </div>
-    <div>
-        <button>수정</button>
-        <button>회원탈퇴</button>
+    <div id="content_wrap">
+        <aside>
+            <p><strong>PROFILE</strong></p>
+            <img id="profile-img" width="125;"
+                 src="https://raw.githubusercontent.com/91song4/A-DDA/main/static/profile_image/default.png?v1"
+                 class="rounded float-start" alt="...">
+            <form method="POST" action="/api/user_img_upload" enctype="multipart/form-data">
+                <div><input style="display:none" id="upload-btn" type="file" name="file" accept="image/*"/></div>
+                <input style="display:none" type="submit" id="submit-btn"/>
+            </form>
+        </aside>
+        <section>
+            <div>
+                <ul>
+                    <li><p><strong>아이디: ADDA<strong></p></li>
+                    <li><p>이름: 반갑다</p></li>
+                    <li><p>전화: 010-1234-5678</p></li>
+                    <li><p>패스워드 변경: <input type="password"></p></li>
+                </ul>
+            </div>
+            <div>
+                <button>수정</button>
+                <button>회원탈퇴</button>
+            </div>
+        </section>
     </div>
 </body>
 
