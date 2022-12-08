@@ -12,25 +12,18 @@ from adda import Adda
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'SuperSecretKey'
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:9625@localhost:3306/register"
+app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:123123@localhost:3306/register"
 db = SQLAlchemy(app)
 
 
-class colbert_registersapp(db.Model):
-    registerld = db.Column(db.Integer, primary_key=True)
-
-    name = db.Column(db.String(255))
-    id = db.Column(db.String(255))
-    phonenum = db.Column(db.String(255))
+class user(db.Model):
+    memberid = db.Column(db.Integer, primary_key = True)
+    ID = db.Column(db.String(255))
     password = db.Column(db.String(255))
-    password_hint = db.Column(db.String(255))
-    email = db.Column(db.String(255))
+    selfname = db.Column(db.String(255))
+    phone = db.Column(db.String(255))
 
-    def __repr__(self):
-        return "registerld: {0} | name: {1} | id: {2} | phonenum: {3} | password: {4} | password_hint: {5} | email: {6}".format(
-            self.registerld, self.name, self.id, self.phonenum,
-            self.password, self.password_hint, self.email)
-
+   
 # 메인화면
 @app.route('/')
 def home():
@@ -41,13 +34,11 @@ def home():
     return render_template('01_main.html')
 
 class RegisterForm(FlaskForm):
-    registerld = IntegerField('Regiseterld ID:')
-    name = StringField('Name:', validators=[DataRequired()])
-    id = StringField('Id:', validators=[DataRequired()])
-    password = StringField('Password:', validators=[DataRequired()])
-    password_hint = StringField('Password_hint:', validators=[DataRequired()])
-    phonenum = StringField('Phonenum:', validators=[DataRequired()])
-    email = StringField('Email:', validators=[DataRequired()])
+    memberid = IntegerField('Memberid ID:')
+    ID = StringField('id:', validators=[DataRequired()])
+    password = StringField('PASSWORD:', validators=[DataRequired()])
+    selfname = StringField('SELFNAME:', validators=[DataRequired()])
+    phone = StringField('PHONE:', validators=[DataRequired()])
 
 
 def log(user_id, api_uri, method):
@@ -66,9 +57,9 @@ def logout():
 
 
 # 회원가입화면
-@app.route('/signup')
-def signup():
-    return render_template('03_signup.html')
+# @app.route('/signup')
+# def signup():
+#     return render_template('03_signup.html')
 
 
 # 추가화면
@@ -95,12 +86,18 @@ def writting():
     return render_template('13_writting.html')
    
 
+# 회원가입 구현 
+
+@app.route('/index')
+def index():
+    all_regiseters = user.query.all()
+    return render_template('index.html', registers=all_regiseters, pageTitle='모든 회원 데이터베이스', )
+
 @app.route('/add_register', methods=['GET', 'POST'])
 def add_register():
     form = RegisterForm()
     if form.validate_on_submit():
-        register = colbert_registersapp(name=form.name.data, id= form.id.data, password = form.password.data, 
-                                   password_hint=form.password_hint.data, phonenum=form.phonenum.data, email=form.email.data)
+        register = user(ID=form.ID.data, password=form.password.data, selfname= form.selfname.data, phone = form.phone.data)
         db.session.add(register)
         db.session.commit()
         return redirect('/')
@@ -112,7 +109,7 @@ def add_register():
 @app.route('/delete_register/<int:member_id>', methods=['GET','POST'])
 def delete_register(member_id):
     if request.method == 'POST': # 만약 POST를 요청 받을 시, 데이터베이스에서 친구를 삭제한다 
-        register = colbert_registersapp.query.get_or_404(member_id)
+        register = user.query.get_or_404(member_id)
         db.session.delete(register)
         db.session.commit()
         return redirect('/')
@@ -122,31 +119,27 @@ def delete_register(member_id):
 
 @app.route('/register/register/<int:member_id>', methods=['GET','POST'])
 def get_register(member_id):
-    register = colbert_registersapp.query.get_or_404(member_id)
+    register = user.query.get_or_404(member_id)
     return render_template('register.html', form=register, pageTitle='회원정보 세부사항', legend="회원정보 세부사항")
 
 @app.route('/register/register/<int:member_id>/update', methods=['GET','POST'])
 def update_register(member_id):
-    register = colbert_registersapp.query.get_or_404(member_id)
+    register = user.query.get_or_404(member_id)
     form = RegisterForm()
-
     if form.validate_on_submit():
-        register.name = form.name.data
-        register.id = form.id.data
-        register.phonenum = form.phonenum.data
+        register.ID = form.ID.data
         register.password = form.password.data
-        register.password_hint = form.password_hint.data
-        register.email = form.email.data
+        register.selfname = form.selfname.data
+        register.phone = form.phone.data
         db.session.commit()
         return redirect(url_for('get_register', member_id=register.registerld))
-    form.registerld.data = register.registerld
-    form.name.data = register.name
-    form.id.data = register.id
-    form.phonenum.data = register.phonenum
+    form.memberid.data = register.memberid
+    form.ID.data = register.ID
     form.password.data = register.password
-    form.password_hint.data = register.password_hint
-    form.email.data = register.email
+    form.selfname.data = form.selfname
+    form.phone.data = register.phone
     return render_template('update_register.html', form=form, pageTitle='Update Friend', legend="Update A Friend")
+
 
 @app.route('/api/user_img_upload', methods=['POST'])
 def api_usr_img_upload():
