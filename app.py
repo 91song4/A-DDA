@@ -1,3 +1,4 @@
+import app as app
 from flask import Flask, render_template, redirect, request, url_for, flash,session, jsonify
 from flask_wtf import FlaskForm
 from wtforms import StringField, IntegerField
@@ -8,7 +9,7 @@ import pymysql, hashlib
 
 from adda import Adda
 
-#app.secret_key = Adda().get_secret_key()
+app.secret_key = Adda().get_secret_key()
 
 app = Flask(__name__)
 app.config['SECRET_KEY']='SuperSecretKey'
@@ -142,7 +143,10 @@ def update_register(member_id):
 # 로그인
 @app.route('/api/login', methods=['POST'])
 def api_login():
-    Adda().log(session['id'], '/api/login', 'POST')
+    print(session)
+    if 'id' in session:
+        print('로그인 함수 안')
+        Adda().log(session['id'], '/api/login', 'POST')
     print('api_login() access')
     
     id_receive = request.form['id_give']
@@ -153,10 +157,10 @@ def api_login():
 
     # result = hashlib.sha256(pass_receive.encode())
 
-    user={
-        'id' : id_receive,
-        'pass' : pass_receive
-    }
+    # user={
+    #     'id' : id_receive,
+    #     'pass' : pass_receive
+    # }
     db = pymysql.connect(host='localhost',
                          port=3306,
                          user='root',
@@ -166,34 +170,36 @@ def api_login():
                          )
 
     cursor = db.cursor(pymysql.cursors.DictCursor)
-    cursor.execute('use adda;')
     cursor.execute(
-        f'select * from user where id = "{id_receive}"')
+        f'select * from adda where id = "{id_receive}"')
     user = cursor.fetchone()
 
     print(user)
 
     if user == None:
-        return '유저가 없습니다'
-    if user and user["password"] == pass_receive:
-        print('로그인 완료!')
-    if user and user["password"] != pass_receive:
+        print('유저가 없습니다.')
+        db.close()
+        return '유저가 없습니다.'
+    elif user and user["password"] != pass_receive:
         print('비밀번호가 틀렸습니다.')
-
-    if user:
+        db.close()
+        return '비밀번호가 없습니다.'
+    elif user and user["password"] == pass_receive:
+        print('로그인 완료!')
         session['id'] = id_receive
         db.commit()
         db.close()
         return redirect(url_for('home'))
-    db.commit()
-    db.close()
+
 
 # 로그아웃
 @app.route('/api/logout')
 def api_logout():
-    Adda().log(session['id'], '/api/logout', 'GET')
+    if 'id' in session:
+        print(session)
+        Adda().log(session['id'], '/api/logout', 'GET')
     session.clear()
-    return redirect(url_for("home"))
+    return redirect(url_for('home'))
 
 # 서버실행
 if __name__ == '__main__':
