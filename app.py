@@ -1,34 +1,37 @@
 import app as app
-from flask import Flask, render_template, redirect, request, url_for, flash,session, jsonify
+from flask import Flask, render_template, redirect, request, url_for, flash, session, jsonify
 from flask_wtf import FlaskForm
 from wtforms import StringField, IntegerField
-from wtforms.validators import DataRequired 
+from wtforms.validators import DataRequired
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import or_
 import pymysql, hashlib
 
 from adda import Adda
 
-app.secret_key = Adda().get_secret_key()
+# app.secret_key = Adda().get_secret_key()
+
 
 app = Flask(__name__)
-app.config['SECRET_KEY']='SuperSecretKey'
+app.config['SECRET_KEY'] = 'SuperSecretKey'
 app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:9625@localhost:3306/register"
 db = SQLAlchemy(app)
 
+
 class colbert_registersapp(db.Model):
-    registerld = db.Column(db.Integer, primary_key = True)
+    registerld = db.Column(db.Integer, primary_key=True)
+
     name = db.Column(db.String(255))
     id = db.Column(db.String(255))
     phonenum = db.Column(db.String(255))
     password = db.Column(db.String(255))
     password_hint = db.Column(db.String(255))
     email = db.Column(db.String(255))
-    
-    
-    def __repr__(self): 
-        return "registerld: {0} | name: {1} | id: {2} | phonenum: {3} | password: {4} | password_hint: {5} | email: {6}".format(self.registerld, self.name, self.id, self.phonenum,
-        self.password, self.password_hint, self.email )
+
+    def __repr__(self):
+        return "registerld: {0} | name: {1} | id: {2} | phonenum: {3} | password: {4} | password_hint: {5} | email: {6}".format(
+            self.registerld, self.name, self.id, self.phonenum,
+            self.password, self.password_hint, self.email)
 
 # 메인화면
 @app.route('/')
@@ -48,37 +51,45 @@ class RegisterForm(FlaskForm):
     phonenum = StringField('Phonenum:', validators=[DataRequired()])
     email = StringField('Email:', validators=[DataRequired()])
 
+
 def log(user_id, api_uri, method):
     Adda().log(user_id, api_uri, method)
+
 
 # 로그인화면
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     return render_template('02_login.html')
 
+
 @app.route('/logout')
 def logout():
     return redirect(url_for(''))
+
 
 # 회원가입화면
 @app.route('/signup')
 def signup():
     return render_template('03_signup.html')
 
+
 # 추가화면
 @app.route('/about')
 def about():
     return '김범석, 송지훈, 이호승, 전진영, 선승우'
+
 
 # Aside
 @app.route('/game')
 def game():
     return render_template('04_game.html')
 
+
 # mypage
 @app.route('/mypage')
 def mypage():
     return render_template('12_mypage.html')
+
 
 # mypage
 @app.route('/writting')
@@ -139,16 +150,50 @@ def update_register(member_id):
     form.email.data = register.email
     return render_template('update_register.html', form=form, pageTitle='Update Friend', legend="Update A Friend")
 
+@app.route('/api/user_img_upload', methods=['POST'])
+def api_usr_img_upload():
+    print(request.method)
+    # if request.method == 'POST':
+    f = request.files['file']
+    extension = f.filename.split('.')[-1]
+    print(f.filename.split('.'))
+    filename = f'{session["id"]}.{extension}'
+    print(filename)
+    f.save(f'static/profile_image/{filename}')
+
+    db = pymysql.connect(host='localhost',port=3306,user='root',password='123123',db='adda',charset='utf8')
+
+    cursor = db.cursor(pymysql.cursors.DictCursor)
+    cursor.execute('use adda;')
+    cursor.execute(f'update user set profile = "{filename}" where id = "{session["id"]}";')
+
+    db.commit()
+    db.close()
+    
+    return redirect(url_for('mypage'))
+
+
+@app.route('/api/user_img_load', methods=['GET'])
+def api_user_img_load():
+    print('api user img load() access')
+    db = pymysql.connect(host='localhost',port=3306,user='root',password='123123',db='adda',charset='utf8')
+
+    cursor = db.cursor(pymysql.cursors.DictCursor)
+    cursor.execute('use adda;')
+    cursor.execute(f'select profile from user where id = "{session["id"]}";')
+    user_img = cursor.fetchone()
+
+    db.commit()
+    db.close()
+    return user_img['profile']
 
 # 로그인
 @app.route('/api/login', methods=['POST'])
 def api_login():
-    print(session)
     if 'id' in session:
-        print('로그인 함수 안')
         Adda().log(session['id'], '/api/login', 'POST')
     print('api_login() access')
-    
+
     id_receive = request.form['id_give']
     pass_receive = request.form['pass_give']
 

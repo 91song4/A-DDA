@@ -2,12 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>회원가입</title>
+    <title>프로필 변경</title>
     <link href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@100&family=Noto+Serif+KR:wght@200&display=swap"
           rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-
 
     <style>
         * {
@@ -46,26 +45,6 @@
             top: 0;
         }
 
-        nav {
-            float: right;
-        }
-
-        .nav_items > li {
-            display: inline-block;
-        }
-
-        .nav_items > li > a {
-            line-height: 60px;
-            padding: 0 30px;
-            color: rgba(0, 0, 0, 0.4);
-            color: ghostwhite;
-        }
-
-        .nav_items > li > a:hover {
-            color: rgba(0, 0, 0, 0.8);
-            color: turquoise;
-        }
-
         .logo {
             height: 60px;
             margin: 12px 0 12px 25px;
@@ -78,6 +57,20 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
             crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function () {
+            //이미지 변경 함수 호출
+            changeIMG();
+        });
+
+        function changeIMG() {
+            //img 태그의 아이디로 변경 할 때
+            $("#imgID").attr("src", "/data/img2.png");
+
+            //img 태그의 클래스 명으로 변경 할 때
+            $(".imgClass").attr("src", "/data/img2.png");
+        }
+    </script>
 </head>
 
 <body>
@@ -86,33 +79,10 @@
             <a class="logo" href="">
                 <img src="https://logos.textgiraffe.com/logos/logo-name/Adda-designstyle-boots-m.png" height="60px">
             </a>
-            <nav>
-                <ul class="nav_items">
-                    <li><a href=javascript:alert('반갑습니다.');><strong>회원가입</strong></a></li>
-                </ul>
-            </nav>
         </header>
     </div>
     <div>
-        <form method="POST" action="/singup">
-            <div>
-                <label for="userid">아이디</label>
-                <input type="text" id="userid" placeholder="아이디" name="userid"/>
-            </div>
-            <div>
-                <label for="username">이름</label>
-                <input type="text" id="username" placeholder="이름" name="username"/>
-            </div>
-            <div>
-                <label for="phonenumber">전화</label>
-                <input type="text" id="phonenumber" placeholder="전화" name="phonenumber"/>
-            </div>
-            <div>
-                <label for="password">비밀번호</label>
-                <input type="password" id="password" placeholder="비밀번호" name="password"/>
-            </div>
-            <button type="submit">등록</button>
-        </form>
+        <img id="itemImg" src="/img/shirt.jpg">
     </div>
 </body>
 </html>
