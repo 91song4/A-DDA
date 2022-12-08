@@ -216,7 +216,7 @@ def api_login():
 
     cursor = db.cursor(pymysql.cursors.DictCursor)
     cursor.execute(
-        f'select * from adda where id = "{id_receive}"')
+        f'select * from user where id = "{id_receive}"')
     user = cursor.fetchone()
 
     print(user)
