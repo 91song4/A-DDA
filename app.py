@@ -185,62 +185,6 @@ def api_user_img_load():
     db.close()
     return user_img['profile']
 
-
-# mypage
-@app.route('/add_register', methods=['GET', 'POST'])
-def add_register():
-    form = RegisterForm()
-    if form.validate_on_submit():
-        register = colbert_registersapp(name=form.name.data, id=form.id.data, password=form.password.data,
-                                        password_hint=form.password_hint.data, phonenum=form.phonenum.data,
-                                        email=form.email.data)
-        db.session.add(register)
-        db.session.commit()
-        return redirect('/')
-
-    return render_template('add_register.html', form=form, pageTitle='회원등록하기')
-
-
-@app.route('/delete_register/<int:member_id>', methods=['GET', 'POST'])
-def delete_register(member_id):
-    if request.method == 'POST':  # 만약 POST를 요청 받을 시, 데이터베이스에서 친구를 삭제한다
-        register = colbert_registersapp.query.get_or_404(member_id)
-        db.session.delete(register)
-        db.session.commit()
-        return redirect('/')
-    else:  # 만약 GET을 요청 받을 시, 메인페이지로 보내준다.
-        return redirect('/')
-
-
-@app.route('/register/register/<int:member_id>', methods=['GET', 'POST'])
-def get_register(member_id):
-    register = colbert_registersapp.query.get_or_404(member_id)
-    return render_template('register.html', form=register, pageTitle='회원정보 세부사항', legend="회원정보 세부사항")
-
-
-@app.route('/register/register/<int:member_id>/update', methods=['GET', 'POST'])
-def update_register(member_id):
-    register = colbert_registersapp.query.get_or_404(member_id)
-    form = RegisterForm()
-
-    if form.validate_on_submit():
-        register.name = form.name.data
-        register.id = form.id.data
-        register.phonenum = form.phonenum.data
-        register.password = form.password.data
-        register.password_hint = form.password_hint.data
-        register.email = form.email.data
-        db.session.commit()
-        return redirect(url_for('get_register', member_id=register.registerld))
-    form.registerld.data = register.registerld
-    form.name.data = register.name
-    form.id.data = register.id
-    form.phonenum.data = register.phonenum
-    form.password.data = register.password
-    form.password_hint.data = register.password_hint
-    form.email.data = register.email
-    return render_template('update_register.html', form=form, pageTitle='Update Friend', legend="Update A Friend")
-
 # 로그인
 @app.route('/api/login', methods=['POST'])
 def api_login():
