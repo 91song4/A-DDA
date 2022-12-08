@@ -1,11 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Mypage</title>
     <link href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@100&family=Noto+Serif+KR:wght@200&display=swap"
-          rel="stylesheet">
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 마이페이지 프로필 사진 불러오기.
+            axios.get('/api/user_img_load').then((response) => {
+                const profile_img = document.querySelector('#profile-img');
+                file_name = response.data;
+                profile_img.src = `../static/profile_image/${file_name}`;
+            })
 
+
+            const upload_btn = document.querySelector('#upload-btn');
+            const image_btn = document.querySelector('#profile-img');
+            const submit_btn = document.querySelector('#submit-btn');
+            image_btn.addEventListener('click', () => { upload_btn.click() });
+            upload_btn.addEventListener('change', () => { submit_btn.click(); });
+        })
+    </script>
     <style>
         * {
             font-family: 'Hahmlet', serif;
@@ -47,18 +65,18 @@
             float: right;
         }
 
-        .nav_items > li {
+        .nav_items>li {
             display: inline-block;
         }
 
-        .nav_items > li > a {
+        .nav_items>li>a {
             line-height: 60px;
             padding: 0 30px;
             color: rgba(0, 0, 0, 0.4);
             color: ghostwhite;
         }
 
-        .nav_items > li > a:hover {
+        .nav_items>li>a:hover {
             color: rgba(0, 0, 0, 0.8);
             color: turquoise;
         }
@@ -68,7 +86,7 @@
             margin: 12px 0 12px 25px;
         }
 
-        .logo > img {
+        .logo>img {
             height: 60px;
         }
 
@@ -132,7 +150,8 @@
             </a>
             <nav>
                 <ul class="nav_items">
-                    <li><a onclick="login('login','','500','300');", style="cursor: pointer;"/><strong>로그아웃</strong></a></li>
+                    <li><a onclick="login('login','','500','300');" ,
+                            style="cursor: pointer;" /><strong>로그아웃</strong></a></li>
                 </ul>
             </nav>
         </header>
@@ -140,10 +159,13 @@
     <div id="content_wrap">
         <aside>
             <p><strong>PROFILE</strong></p>
-            <ul class="container">
-                <img width="125;"  src="https://raw.githubusercontent.com/91song4/A-DDA/main/static/profile_image/default.png?v1" class="rounded float-start" alt="...">
-            </ul>
-            <p><a onclick="change_image('change_image','','500','300');", style="cursor: pointer;"/>프로필사진변경<a></p>
+            <img id="profile-img" width="125;"
+                 src="https://raw.githubusercontent.com/91song4/A-DDA/main/static/profile_image/default.png?v1"
+                 class="rounded float-start" alt="...">
+            <form method="POST" action="/api/user_img_upload" enctype="multipart/form-data">
+                <div><input style="display:none" id="upload-btn" type="file" name="file" accept="image/*"/></div>
+                <input style="display:none" type="submit" id="submit-btn"/>
+            </form>
         </aside>
         <section>
             <div>
@@ -161,4 +183,5 @@
         </section>
     </div>
 </body>
+
 </html>

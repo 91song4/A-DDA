@@ -1,24 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script>
-        function hey() {
-            $.ajax({
-                type: "POST",
-                url: "/test",
-                data: {title_give: '봄날은간다'},
-                success: function (response) {
-                    console.log(response)
-                }
-            })
-        }
-    </script>
-</head>
-<body>
-    <h1>나의 첫 웹페이지!</h1>
-    <button onclick="hey()">버튼을 만들자!</button>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block body %}
+{% if registers %}
+<p><a href="{{ url_for('.add_register')}}"> 회원등록 </a></p>
+<table>
+    <thead>
+        <tr>
+            <td>번호</td>
+            <td style="padding-left: 6px;">이름</td>
+            <td>아이디</td>
+            <td>전화번호</td>
+            <td style="padding-left: 6px;">비밀번호</td>
+            <td>비밀번호 확인</td>
+            <td style="padding-left: 40px;">이메일</td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in registers %}
+        <tr>
+            <td>{{ row.registerld }}</td>
+            <td>{{ row.name }}</td>
+            <td>{{ row.id }}</td>
+            <td>{{ row.phonenum }}</td>
+            <td style="padding-left: 20px;">{{ row.password }}</td>
+            <td style="padding-left: 50px;">{{ row.password_hint }}</td>
+            <td>{{ row.email }}</td>
+            <td>
+                <form action="{{ url_for('get_register', member_id=row.registerld)}}" method="POST">
+                    <input type ="submit" value="수정하기" />
+                </form>
+                
+            </td>
+        
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+{% endblock%}
