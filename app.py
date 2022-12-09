@@ -240,8 +240,6 @@ def api_logout():
     session.clear()
     return redirect(url_for('home'))
 
-
-
 # 서버실행
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
