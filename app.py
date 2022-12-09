@@ -136,7 +136,6 @@ def add_register():
     return render_template('add_register.html', form=form, pageTitle='회원등록하기')
 
 
-
 @app.route('/delete_register/<int:member_id>', methods=['GET','POST'])
 def delete_register(member_id):
     if request.method == 'POST': # 만약 POST를 요청 받을 시, 데이터베이스에서 친구를 삭제한다 
