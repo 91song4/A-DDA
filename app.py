@@ -14,7 +14,7 @@ from adda import Adda
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'SuperSecretKey'
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:123123@localhost:3306/register"
+app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:123123@localhost:3306/adda"
 db = SQLAlchemy(app)
 
 
@@ -59,9 +59,9 @@ def logout():
 
 
 # 회원가입화면
-# @app.route('/signup')
-# def signup():
-#     return render_template('03_signup.html')
+@app.route('/signup')
+def signup():
+    return render_template('03_signup.html')
 
 
 # 추가화면
@@ -77,23 +77,49 @@ def game():
 
 
 # mypage
-# @app.route('/mypage')
-# def mypage():
-#     return render_template('12_mypage.html')
+@app.route('/mypage')
+def mypage():
+    return render_template('12_mypage.html')
 
 
 # mypage
 @app.route('/writting')
 def writting():
     return render_template('13_writting.html')
-   
+
 
 # 회원가입 구현 
 
-@app.route('/mypage')
-def index():
-    all_regiseters = user.query.all()
-    return render_template('index.html', registers=all_regiseters, pageTitle='모든 회원 데이터베이스', )
+@app.route('/api/register', methods=['GET','POST'])
+def register():
+    db = pymysql.connect(host='localhost',port=3306,user='root',password='123123',db='adda',charset='utf8')
+    cursor = db.cursor()
+
+    if request.method == 'POST':
+        register_info = request.form
+
+        id = register_info['id']
+        password = register_info['password']
+        selfname = register_info['selfname']
+        phone = register_info['phone']
+        sql = """
+            INSERT INTO user (id, password, selfname, phone)
+            VALUES (%s, %s, %s, %s);
+        """
+        cursor.execute(sql,(id, password, selfname, phone))
+        db.commit()
+        
+
+        print(id, password, selfname, phone)
+
+        #return redirect(request.url)
+        return render_template('03_signup.html')
+
+    return render_template('03_signup.html')
+    
+
+
+# 이건 망함 
 
 @app.route('/add_register', methods=['GET', 'POST'])
 def add_register():
@@ -245,3 +271,4 @@ def api_logout():
 # 서버실행
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
+    
