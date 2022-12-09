@@ -170,7 +170,7 @@ def update_register(member_id):
     return render_template('update_register.html', form=form, pageTitle='Update Friend', legend="Update A Friend")
 
 
-@app.route('/api/user_img_upload', methods=['POST'])
+@app.route('/api/user_img', methods=['POST'])
 def api_usr_img_upload():
     print(request.method)
     # if request.method == 'POST':
@@ -192,20 +192,51 @@ def api_usr_img_upload():
     
     return redirect(url_for('mypage'))
 
+@app.route('/api/user_modi', methods=['POST'])
+def api_user_modi():
+    print('api_user_modi() accecc')
+    modi_password= request.json['password']
 
-@app.route('/api/user_img_load', methods=['GET'])
+    db = pymysql.connect(host='localhost',port=3306,user='root',password='123123',db='adda',charset='utf8')
+
+    cursor = db.cursor(pymysql.cursors.DictCursor)
+    cursor.execute('use adda;')
+    cursor.execute(f'update user set password = "{modi_password}" where id = "{session["id"]}";')
+
+    db.commit()
+    db.close()
+    return jsonify({'msg':'success'})
+
+
+@app.route('/api/withdrawal', methods=['get'])
+def api_withdrawal():
+    print('api_withdrawal() accescc')
+    print(session)
+    db = pymysql.connect(host='localhost',port=3306,user='root',password='123123',db='adda',charset='utf8')
+
+    cursor = db.cursor(pymysql.cursors.DictCursor)
+    print('test here')
+    cursor.execute('use adda;')
+    cursor.execute(f'delete from user where id = "{session["id"]}";')
+
+    db.commit()
+    db.close()
+    # return redirect(url_for('api_logout'))
+    return jsonify({'msg':'success'})
+
+@app.route('/api/user_info', methods=['GET'])
 def api_user_img_load():
     print('api user img load() access')
     db = pymysql.connect(host='localhost',port=3306,user='root',password='123123',db='adda',charset='utf8')
 
     cursor = db.cursor(pymysql.cursors.DictCursor)
     cursor.execute('use adda;')
-    cursor.execute(f'select profile from user where id = "{session["id"]}";')
-    user_img = cursor.fetchone()
-
+    cursor.execute(f'select id, selfname, phone, profile from user where id = "{session["id"]}";')
+    user = cursor.fetchone()
+    print(user)
     db.commit()
     db.close()
-    return user_img['profile']
+    return user
 
 # 로그인
 @app.route('/api/login', methods=['POST'])
@@ -260,9 +291,9 @@ def api_login():
 # 로그아웃
 @app.route('/api/logout')
 def api_logout():
-    if 'id' in session:
-        print(session)
-        Adda().log(session['id'], '/api/logout', 'GET')
+    # if 'id' in session:
+        # print(session)
+        # Adda().log(session['id'], '/api/logout', 'GET')
     session.clear()
     return redirect(url_for('home'))
 
