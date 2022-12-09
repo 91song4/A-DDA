@@ -149,45 +149,48 @@
                 <img src="https://logos.textgiraffe.com/logos/logo-name/Adda-designstyle-boots-m.png" height="60px">
             </a>
             <nav>
-                <ul class="nav_items">
+                <ul class="nav_items" href="/api/logout">
                     <li><a onclick="location.href='/api/logout'" style="cursor: pointer;" /><strong>로그아웃</strong></a>
                     </li>
                 </ul>
             </nav>
         </header>
     </div>
-    <div id="content_wrap">
-        <aside>
-            <p><strong>PROFILE</strong></p>
-            <img id="profile-img" width="125;" src="" class="rounded float-start" alt="...">
-            <form method="POST" action="/api/user_img_upload" enctype="multipart/form-data">
-                <div><input style="display:none" id="upload-btn" type="file" name="file" accept="image/*" /></div>
-                <input style="display:none" type="submit" id="submit-btn" />
-            </form>
-        </aside>
-        <section>
-            <div>
-                <ul>
-                    <li>
-                        <p><strong>아이디: ADDA<strong></p>
-                    </li>
-                    <li>
-                        <p>이름: 반갑다</p>
-                    </li>
-                    <li>
-                        <p>전화: 010-1234-5678</p>
-                    </li>
-                    <li>
-                        <p>패스워드 변경: <input type="password"></p>
-                    </li>
-                </ul>
-            </div>
-            <div>
-                <button>수정</button>
-                <button>회원탈퇴</button>
-            </div>
-        </section>
-    </div>
+    <tr>
+        <div id="content_wrap">
+            <aside>
+                <p><strong>PROFILE</strong></p>
+                <img id="profile-img" width="125;" src="" class="rounded float-start" alt="...">
+                <form method="POST" action="/api/user_img_upload" enctype="multipart/form-data">
+                    <div><input style="display:none" id="upload-btn" type="file" name="file" accept="image/*" /></div>
+                    <input style="display:none" type="submit" id="submit-btn" />
+                </form>
+            </aside>
+            <section>
+                <div>
+                    <ul>
+                        <li>
+                            <p><strong>아이디: adda<strong></p>
+                        </li>
+                        <li>
+                            <p>이름: 반갑다</p>
+                        </li>
+                        <li>
+                            <p>전화: 010-1234-5678</p>
+                        </li>
+                        <li>
+                            <p>패스워드 변경: <input type="password"></p>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <button>수정</button>
+                    <button>회원탈퇴</button>
+                </div>
+            </section>
+        </div>
+    </tr>
+
 </body>
 
 </html>

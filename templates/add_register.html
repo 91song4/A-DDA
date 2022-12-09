@@ -1,20 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Loign</title>
+	</head>
 
-{% extends 'base.html' %}
-{% block body %}
-<div>
+	<body>
+		<div class="login-page">
+			<form action="/register" method="POST">
+				<input type="text" placeholder="id" name="id">
+				<input type="password" placeholder="password" name="password">
+				<input type="text" placeholder="selfname" name="selfname">
+                <input type="text" placeholder="phone" name="phone">
+				<button type="submit">Create</button>
+			</form>
+			<br>
+			<form action="/login" method="POST">
+				<input type="text" placeholder="id" name="id">
+				<input type="password" placeholder="password" name="password">
+				<button type="submit">Login</button>
+			</form>
 
-    <h3> {{legend}} </h3>
-    
-    <form method="POST" action="{{url_for('add_register') }}">
-        {{ form.csrf_token }}
-        <p>ID: {{form.ID }}</p>
-        <p>비밀번호:<input type="password",value= {{form.password}}></p>
-       <p> 이름: {{form.selfname }}</p>
-        <p>전화번호: {{form.phone }}</p>
 
-        <input type="submit", value="회원등록">
 
-    </form>
-</div>
-
-{% endblock %}
+		</div>
+		<h5>check user_info:{{info}}</h5>
+	</body>
+</html>

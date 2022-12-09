@@ -163,22 +163,16 @@
                     </aside>
                     <section>
                         <div>
-                            <li>번호: {{ row.memberid }}</li>
                             <li>ID: {{ row.ID }}</li>
                             <li>비밀번호: {{ row.password }}</li>
                             <li>이름: {{ row.selfname }}</li>
                             <li>전화번호: {{ row.phone }}</li>
                             <form action="{{ url_for('update_register', member_id=row.memberid)}}" method="POST">
                                 <input type="submit" value="수정하기" />
-
                             </form>
                             <form action="{{ url_for('delete_register', member_id=row.memberid)}}" method="POST">
                                 <input type="submit" value="회원탈퇴" />
                             </form>
-
-
-
-
                         </div>
                     </section>
 
