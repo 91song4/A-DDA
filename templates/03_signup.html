@@ -83,7 +83,7 @@
 <body>
     <div id="wrap">
         <header>
-            <a class="logo" href="">
+            <a class="logo" href="/">
                 <img src="https://logos.textgiraffe.com/logos/logo-name/Adda-designstyle-boots-m.png" height="60px">
             </a>
             <nav>
@@ -94,18 +94,18 @@
         </header>
     </div>
     <div>
-        <form method="POST" action="/singup">
+        <form method="POST" action="/api/register">
             <div>
                 <label for="userid">아이디</label>
-                <input type="text" id="userid" placeholder="아이디" name="userid"/>
+                <input type="text" id="userid" placeholder="아이디" name="id"/>
             </div>
             <div>
                 <label for="username">이름</label>
-                <input type="text" id="username" placeholder="이름" name="username"/>
+                <input type="text" id="username" placeholder="이름" name="selfname"/>
             </div>
             <div>
                 <label for="phonenumber">전화</label>
-                <input type="text" id="phonenumber" placeholder="전화" name="phonenumber"/>
+                <input type="text" id="phonenumber" placeholder="전화" name="phone"/>
             </div>
             <div>
                 <label for="password">비밀번호</label>

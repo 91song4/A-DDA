@@ -6,18 +6,14 @@
     
     {% if form %}
     <form method="POST" action="">
-
-        {{ form.csrf_token }}
-        {{ form.registerld.label }} {{form.registerld }}
-        {{ form.name.label }} {{form.name }}
-        {{ form.id.label }} {{form.id }}
-        {{ form.phonenum.label }} {{form.phonenum }}
+        {{ form.memberid.label }} {{form.memberid }}
+        {{ form.ID.label }} {{form.ID }}
         {{ form.password.label }} {{form.password }}
-        {{ form.password_hint.label }} {{form.password_hint }}
-        {{ form.email.label }} {{form.email }}
+        {{ form.selfname.label }} {{form.selfname }}
+        {{ form.phone.label }} {{form.phone }}
 
-        <input type="submit" formaction="{{url_for('update_register', member_id=form.registerld)}}" value="수정">
-        <input type="submit" formaction="{{url_for('delete_register', member_id=form.registerld)}}" value="삭제">
+        <input type="submit" formaction="{{url_for('update_register', member_id=form.memberid)}}" value="수정">
+        <input type="submit" formaction="{{url_for('delete_register', member_id=form.memberid)}}" value="삭제">
 
     </form>
     {% endif %}

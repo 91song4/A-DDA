@@ -10,13 +10,47 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             // 마이페이지 프로필 사진 불러오기.
-            axios.get('/api/user_img_load').then((response) => {
+            axios.get('/api/user_info').then((response) => {
+                console.log(response.data)
                 const profile_img = document.querySelector('#profile-img');
-                file_name = response.data;
-                profile_img.src = `../static/profile_image/${file_name}`;
+                user = response.data;
+                profile_img.src = `../static/profile_image/${user.profile}`;
+                document.querySelector('#user_id').textContent = `아이디: ${user.id}`;
+                document.querySelector('#user_name').textContent = `이름: ${user.selfname}`;
+                document.querySelector('#user_phone').textContent = `전화: ${user.phone}`;
+            })
+
+            //수정버튼 눌렸을 때
+            document.querySelector('#user_modi').addEventListener('click', () => {
+                const pw = document.querySelector('#modi_pw').value;
+                console.log(pw);
+                if (pw === '') {
+                    location.href = '/'
+                } else {
+                    axios.post('/api/user_modi', { 'password': pw }).then(function (response) {
+                        console.log('axios.post() accescc');
+                        if (response.data.msg === 'success') {
+                            location.href = '/'
+                        }
+                    })
+                }
+            })
+
+            document.querySelector('#userdel').addEventListener('click', () => {
+                axios.get('/api/withdrawal').then((response) => {
+                    console.log(response.data)
+                    if (response.data.msg === 'success') {
+                        location.href = '/api/logout'
+                    }
+                })
             })
 
 
+
+
+
+
+            //이미지 업로드
             const upload_btn = document.querySelector('#upload-btn');
             const image_btn = document.querySelector('#profile-img');
             const submit_btn = document.querySelector('#submit-btn');
@@ -145,43 +179,52 @@
 <body>
     <div id="wrap">
         <header>
-            <a class="logo" href="">
+            <a class="logo" href="/">
                 <img src="https://logos.textgiraffe.com/logos/logo-name/Adda-designstyle-boots-m.png" height="60px">
             </a>
             <nav>
-                <ul class="nav_items">
-                    <li><a onclick="login('login','','500','300');" ,
-                            style="cursor: pointer;" /><strong>로그아웃</strong></a></li>
+                <ul class="nav_items" href="/api/logout">
+                    <li><a onclick="location.href='/api/logout'" style="cursor: pointer;" /><strong>로그아웃</strong></a>
+                    </li>
                 </ul>
             </nav>
         </header>
     </div>
-    <div id="content_wrap">
-        <aside>
-            <p><strong>PROFILE</strong></p>
-            <img id="profile-img" width="125;"
-                 src="https://raw.githubusercontent.com/91song4/A-DDA/main/static/profile_image/default.png?v1"
-                 class="rounded float-start" alt="...">
-            <form method="POST" action="/api/user_img_upload" enctype="multipart/form-data">
-                <div><input style="display:none" id="upload-btn" type="file" name="file" accept="image/*"/></div>
-                <input style="display:none" type="submit" id="submit-btn"/>
-            </form>
-        </aside>
-        <section>
-            <div>
-                <ul>
-                    <li><p><strong>아이디: ADDA<strong></p></li>
-                    <li><p>이름: 반갑다</p></li>
-                    <li><p>전화: 010-1234-5678</p></li>
-                    <li><p>패스워드 변경: <input type="password"></p></li>
-                </ul>
-            </div>
-            <div>
-                <button>수정</button>
-                <button>회원탈퇴</button>
-            </div>
-        </section>
-    </div>
+    <tr>
+        <div id="content_wrap">
+            <aside>
+                <p><strong>PROFILE</strong></p>
+                <img id="profile-img" width="125;" src="" class="rounded float-start" alt="...">
+                <form method="POST" action="/api/user_img" enctype="multipart/form-data">
+                    <div><input style="display:none" id="upload-btn" type="file" name="file" accept="image/*" /></div>
+                    <input style="display:none" type="submit" id="submit-btn" />
+                </form>
+            </aside>
+            <section>
+                <div>
+                    <ul>
+                        <li>
+                            <p><strong id="user_id">아이디: adda<strong></p>
+                        </li>
+                        <li>
+                            <p id="user_name">이름: 반갑다</p>
+                        </li>
+                        <li>
+                            <p id="user_phone">전화: 010-1234-5678</p>
+                        </li>
+                        <li>
+                            <p>패스워드 변경: <input id="modi_pw" type="password"></p>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <button id="user_modi">수정</button>
+                    <button id="userdel">회원탈퇴</button>
+                </div>
+            </section>
+        </div>
+    </tr>
+
 </body>
 
 </html>

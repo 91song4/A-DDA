@@ -1,22 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Loign</title>
+	</head>
 
-{% extends 'base.html' %}
-{% block body %}
-<div>
+	<body>
+		<div class="login-page">
+			<form action="/register" method="POST">
+				<input type="text" placeholder="id" name="id">
+				<input type="password" placeholder="password" name="password">
+				<input type="text" placeholder="selfname" name="selfname">
+                <input type="text" placeholder="phone" name="phone">
+				<button type="submit">Create</button>
+			</form>
+			<br>
+			<form action="/login" method="POST">
+				<input type="text" placeholder="id" name="id">
+				<input type="password" placeholder="password" name="password">
+				<button type="submit">Login</button>
+			</form>
 
-    <h3> {{legend}} </h3>
-    
-    <form method="POST" action="{{url_for('add_register') }}">
-        {{ form.csrf_token }}
-        {{ form.name.label }} {{form.name(size=20) }}
-        {{ form.id.label }} {{form.id(size=20) }}
-        {{ form.phonenum.label }} {{form.phonenum(size=20) }}
-        {{ form.password.label }} {{form.password(size=20) }}
-        {{ form.password_hint.label }} {{form.password_hint(size=20) }}
-        {{ form.email.label }} {{form.email(size=20) }}
 
-        <input type="submit" value="회원등록">
 
-    </form>
-</div>
-
-{% endblock %}
+		</div>
+		<h5>check user_info:{{info}}</h5>
+	</body>
+</html>
