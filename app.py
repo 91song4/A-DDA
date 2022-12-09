@@ -100,6 +100,8 @@ def register():
 
         id = register_info['id']
         password = register_info['password']
+        password = hashlib.sha256(password.encode()).hexdigest()
+        print(password)
         selfname = register_info['selfname']
         phone = register_info['phone']
         sql = """
@@ -108,6 +110,7 @@ def register():
         """
         cursor.execute(sql,(id, password, selfname, phone))
         db.commit()
+        Adda().log(id, '/add_register', 'POST')
         
 
         print(id, password, selfname, phone)
@@ -172,8 +175,8 @@ def update_register(member_id):
 
 @app.route('/api/user_img', methods=['POST'])
 def api_usr_img_upload():
-    print(request.method)
-    # if request.method == 'POST':
+    print('api_usr_img_upload() access')
+    Adda().log(session['id'], '/api/user_img', 'POST')
     f = request.files['file']
     extension = f.filename.split('.')[-1]
     print(f.filename.split('.'))
@@ -195,8 +198,9 @@ def api_usr_img_upload():
 @app.route('/api/user_modi', methods=['POST'])
 def api_user_modi():
     print('api_user_modi() accecc')
+    Adda().log(session['id'], '/api/user_modi', 'POST')
     modi_password= request.json['password']
-
+    modi_password = hashlib.sha256(modi_password.encode()).hexdigest()
     db = pymysql.connect(host='localhost',port=3306,user='root',password='123123',db='adda',charset='utf8')
 
     cursor = db.cursor(pymysql.cursors.DictCursor)
@@ -208,9 +212,10 @@ def api_user_modi():
     return jsonify({'msg':'success'})
 
 
-@app.route('/api/withdrawal', methods=['get'])
+@app.route('/api/withdrawal', methods=['GET'])
 def api_withdrawal():
     print('api_withdrawal() accescc')
+    Adda().log(session['id'], '/api/withdrawal', 'GET')
     print(session)
     db = pymysql.connect(host='localhost',port=3306,user='root',password='123123',db='adda',charset='utf8')
 
@@ -227,6 +232,7 @@ def api_withdrawal():
 @app.route('/api/user_info', methods=['GET'])
 def api_user_img_load():
     print('api user img load() access')
+
     db = pymysql.connect(host='localhost',port=3306,user='root',password='123123',db='adda',charset='utf8')
 
     cursor = db.cursor(pymysql.cursors.DictCursor)
@@ -241,8 +247,6 @@ def api_user_img_load():
 # 로그인
 @app.route('/api/login', methods=['POST'])
 def api_login():
-    if 'id' in session:
-        Adda().log(session['id'], '/api/login', 'POST')
     print('api_login() access')
 
     id_receive = request.form['id_give']
@@ -251,7 +255,7 @@ def api_login():
     print(id_receive)
     print(pass_receive)
 
-    # result = hashlib.sha256(pass_receive.encode())
+    pass_receive = hashlib.sha256(pass_receive.encode()).hexdigest()
 
     # user={
     #     'id' : id_receive,
@@ -285,15 +289,24 @@ def api_login():
         session['id'] = id_receive
         db.commit()
         db.close()
+
+    if 'id' in session:
+        Adda().log(session['id'], '/api/login', 'POST')
         return redirect(url_for('home'))
 
 
 # 로그아웃
 @app.route('/api/logout')
 def api_logout():
-    # if 'id' in session:
-        # print(session)
-        # Adda().log(session['id'], '/api/logout', 'GET')
+    if 'id' in session:
+        print(session)
+        db = pymysql.connect(host='localhost',port=3306,user='root',password='123123',db='adda',charset='utf8')
+        cursor = db.cursor(pymysql.cursors.DictCursor)
+        cursor.execute(
+        f'select * from user where id = "{session["id"]}"')
+        user = cursor.fetchone()
+        if user:
+            Adda().log(session['id'], '/api/logout', 'GET')
     session.clear()
     return redirect(url_for('home'))
 
